@@ -1,1 +1,3 @@
-p
+pandas
+flask_api
+pymysql

@@ -1,11 +1,10 @@
 from loader.OpenPaymentsAPIConnector import OpenPaymentsAPIConnector
 
 
-def task1():
+def update_db():
     connector = OpenPaymentsAPIConnector()
     connector.get_latest_db()
-    connector.print_top_10_rows()
-
+    connector.update_mysql()
 
 if __name__ == '__main__':
-    task1()
+    update_db()
