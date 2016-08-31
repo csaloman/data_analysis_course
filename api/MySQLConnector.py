@@ -15,7 +15,7 @@ limit %s """
     @staticmethod
     def _get_mysql_connection():
         return pymysql.connect(host='localhost',
-                                   user='root',
+                                   user='project',
                                    password='password',
                                    db='payments',
                                    charset='utf8mb4',

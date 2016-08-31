@@ -23,7 +23,7 @@ class OpenPaymentsAPIConnector(object):
         self.database = DataFrame(read_json(url))
 
     def update_mysql(self):
-        engine = create_engine('mysql+pymysql://root:password@localhost:3306/payments')
+        engine = create_engine('mysql+pymysql://project:password@localhost:3306/payments')
         self.database.to_sql('payment_records', engine, if_exists='append', index=False)
 
     def get_specialties(self):
