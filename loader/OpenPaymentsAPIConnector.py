@@ -18,24 +18,13 @@ class OpenPaymentsAPIConnector(object):
         self.database = {}
 
     def get_latest_db(self):
+        # create sodaAPI requests with the requested columns
         url = r'https://openpaymentsdata.cms.gov/resource/u84v-qwd9.json?$limit=50000&$select={}'.format(
             ','.join(OpenPaymentsAPIConnector._selected_columns))
         self.database = DataFrame(read_json(url))
 
     def update_mysql(self):
+        # creating SQL alchemy connection to mysql
         engine = create_engine('mysql+pymysql://project:password@localhost:3306/payments')
+        # using pandas to_sql to insert - appending result without new index column
         self.database.to_sql('payment_records', engine, if_exists='append', index=False)
-
-    def get_specialties(self):
-        list_physician_specialty = self.database.drop_duplicates(['physician_specialty'])['physician_specialty']
-        return list_physician_specialty
-
-    def get_top_kol_by_specialty(self, specialty, num_of_entries=5):
-        grouped = self.database[self.database['physician_specialty'] == specialty].groupby(
-            OpenPaymentsAPIConnector.group_by_list,
-            sort=True).agg(
-            OpenPaymentsAPIConnector.aggregations).head(num_of_entries).loc[:]
-        return grouped
-
-    def print_top_10_rows(self):
-        print(self.database[:10])
